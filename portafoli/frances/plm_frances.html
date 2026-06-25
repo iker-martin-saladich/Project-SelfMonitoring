@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PLM · Aprenentatge del Francès</title>
+<title>PLM · Curs de Francès — Progrés detallat</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+  /* ── DESIGN TOKENS (idèntics al PLM principal) ── */
   :root {
     --cream: #FAF7F2; --warm-white: #FEFCF9;
     --text-dark: #1A1208; --text-mid: #4A3F2F; --text-muted: #8C7B68;
@@ -17,11 +18,16 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text-dark); line-height:1.7; }
 
+  /* ── NAV (idèntic) ── */
   nav { position:sticky; top:0; z-index:100; background:rgba(250,247,242,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:0 2.5rem; display:flex; align-items:center; justify-content:space-between; height:64px; }
   .nav-back { text-decoration:none; color:var(--text-mid); font-size:0.875rem; transition:color 0.2s; }
   .nav-back:hover { color:var(--accent); }
   .nav-title { font-family:'Playfair Display',serif; font-size:0.95rem; color:var(--accent); }
+  .nav-links { display:flex; gap:1.5rem; }
+  .nav-links a { text-decoration:none; color:var(--text-muted); font-size:0.8rem; transition:color 0.2s; }
+  .nav-links a:hover { color:var(--accent); }
 
+  /* ── HEADER (idèntic) ── */
   .page-header { background:linear-gradient(135deg, #0D2137 0%, #1B3A5C 60%, #2E6DA4 100%); color:white; padding:3.5rem 2.5rem; }
   .page-header-inner { max-width:1100px; margin:0 auto; }
   .project-tag { font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent-light); margin-bottom:0.75rem; }
@@ -32,6 +38,7 @@
   .hstat .val { font-family:'Playfair Display',serif; font-size:1.6rem; color:var(--accent-light); line-height:1; }
   .hstat .lbl { font-size:0.72rem; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.06em; margin-top:0.2rem; }
 
+  /* ── LAYOUT ── */
   main { max-width:1100px; margin:0 auto; padding:3rem 2.5rem; }
   .card { background:var(--warm-white); border:1px solid var(--border); border-radius:1rem; padding:1.5rem; margin-bottom:1.5rem; }
   .card-title { font-size:0.72rem; font-weight:500; text-transform:uppercase; letter-spacing:0.09em; color:var(--accent); margin-bottom:1.25rem; }
@@ -39,191 +46,596 @@
   .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
   .section-sep { margin:2.5rem 0 1.5rem; font-family:'Playfair Display',serif; font-size:1.15rem; color:var(--text-dark); border-bottom:1px solid var(--border); padding-bottom:0.5rem; }
 
+  /* ── PROGRESS BAR (idèntic) ── */
   .big-progress { background:var(--warm-white); border:1px solid var(--border); border-radius:1rem; padding:1.75rem; margin-bottom:1.5rem; }
   .big-progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
   .big-progress-header h2 { font-family:'Playfair Display',serif; font-size:1.1rem; }
   .pct-badge { font-size:1.4rem; font-family:'Playfair Display',serif; color:var(--accent); }
   .progress-track { height:10px; background:var(--border); border-radius:5px; overflow:hidden; }
-  .progress-track-fill { height:100%; background:var(--accent); border-radius:5px; }
+  .progress-track-fill { height:100%; background:var(--accent); border-radius:5px; transition:width 0.8s ease; }
 
-  /* Nivell MCER visual */
+  /* ── MCER (idèntic) ── */
   .mcer-track { display:flex; gap:0.4rem; margin-top:1.25rem; }
   .mcer-box { flex:1; padding:0.6rem 0.4rem; border-radius:0.5rem; text-align:center; font-size:0.78rem; font-weight:500; border:1.5px solid var(--border); color:var(--text-muted); }
+  .mcer-box.done { background:var(--success-pale); color:var(--success); border-color:var(--success); }
   .mcer-box.current { background:var(--accent); color:white; border-color:var(--accent); }
   .mcer-box.target  { background:var(--accent-pale); color:var(--accent); border-color:var(--accent-light); }
   .mcer-label { font-size:0.65rem; font-weight:400; display:block; margin-top:2px; opacity:0.75; }
 
-  /* Vocab pills */
-  .vocab-stats { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1rem; }
-  .vstat { display:flex; align-items:center; gap:0.5rem; background:var(--cream); border:1px solid var(--border); border-radius:0.75rem; padding:0.6rem 1rem; }
-  .vstat .n { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--accent); }
-  .vstat .l { font-size:0.72rem; color:var(--text-muted); }
+  /* ── KPI MINI CARDS ── */
+  .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.5rem; }
+  .kpi { background:var(--warm-white); border:1px solid var(--border); border-radius:0.875rem; padding:1.25rem 1rem; text-align:center; }
+  .kpi .val { font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--accent); line-height:1; }
+  .kpi .lbl { font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.07em; margin-top:0.3rem; }
+  .kpi .sub { font-size:0.72rem; color:var(--success); margin-top:0.15rem; }
 
-  .excel-notice { background:var(--accent-pale); border:1px solid var(--accent-light); border-radius:0.75rem; padding:1rem 1.25rem; margin-bottom:2rem; font-size:0.85rem; color:var(--text-mid); }
-  .excel-notice strong { color:var(--accent); }
+  /* ── SESSIONS TABLE ── */
+  .session-row { display:flex; align-items:center; gap:1rem; padding:0.9rem 0; border-bottom:1px solid var(--border); }
+  .session-row:last-child { border-bottom:none; }
+  .session-badge { font-size:0.7rem; font-weight:500; padding:0.2rem 0.7rem; border-radius:2rem; white-space:nowrap; }
+  .badge-done { background:var(--success-pale); color:var(--success); }
+  .badge-current { background:var(--accent-pale); color:var(--accent); }
+  .badge-next { background:#F0EEEB; color:var(--text-muted); }
+  .session-name { flex:1; font-size:0.88rem; color:var(--text-dark); font-weight:500; }
+  .session-meta { font-size:0.78rem; color:var(--text-muted); }
+  .session-score { font-family:'Playfair Display',serif; font-size:1rem; color:var(--accent); white-space:nowrap; }
+
+  /* ── SKILL BARS ── */
+  .skill-row { display:flex; align-items:center; gap:1rem; margin-bottom:0.875rem; }
+  .skill-label { font-size:0.82rem; color:var(--text-mid); width:160px; flex-shrink:0; }
+  .skill-track { flex:1; height:8px; background:var(--border); border-radius:4px; overflow:hidden; }
+  .skill-fill { height:100%; border-radius:4px; }
+  .skill-pct { font-size:0.78rem; color:var(--text-muted); width:36px; text-align:right; flex-shrink:0; }
+
+  /* ── SCORE SPARKLINE ── */
+  .sparkline-wrap { position:relative; height:80px; }
+  .sparkline-wrap svg { width:100%; height:100%; }
+
+  /* ── EXERCISE LOG ── */
+  .ex-row { display:flex; align-items:flex-start; gap:0.875rem; padding:0.7rem 0; border-bottom:1px solid var(--border); }
+  .ex-row:last-child { border-bottom:none; }
+  .ex-type { font-size:0.7rem; font-weight:500; padding:0.15rem 0.6rem; border-radius:2rem; white-space:nowrap; flex-shrink:0; margin-top:2px; }
+  .type-trad { background:#E6EEF6; color:var(--accent); }
+  .type-buits { background:#FEF6E0; color:var(--warning); }
+  .type-comp { background:var(--success-pale); color:var(--success); }
+  .type-lliure { background:#F0EEEB; color:var(--text-mid); }
+  .type-deso { background:#F5E6F6; color:#7D3C98; }
+  .ex-name { flex:1; font-size:0.84rem; color:var(--text-dark); }
+  .ex-note { font-size:0.74rem; color:var(--text-muted); margin-top:1px; }
+  .ex-score { font-family:'Playfair Display',serif; font-size:0.95rem; color:var(--accent); white-space:nowrap; }
+
+  /* ── ERROR CARDS ── */
+  .error-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+  .error-item { background:var(--cream); border:1px solid var(--border); border-radius:0.75rem; padding:0.875rem 1rem; border-left:3px solid; }
+  .error-item.recurrent { border-left-color:#C0392B; }
+  .error-item.fixed { border-left-color:var(--success); }
+  .error-wrong { font-size:0.8rem; color:#C0392B; font-weight:500; text-decoration:line-through; }
+  .error-right { font-size:0.82rem; color:var(--success); font-weight:500; margin-top:0.1rem; }
+  .error-rule { font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; }
+  .error-count { font-size:0.68rem; font-weight:500; padding:0.15rem 0.5rem; border-radius:2rem; background:#FDEAEA; color:#8B3A3A; margin-top:0.4rem; display:inline-block; }
+
+  /* ── INSIGHT PILLS ── */
+  .insight { display:flex; align-items:flex-start; gap:0.75rem; padding:0.75rem 1rem; border-radius:0.75rem; margin-bottom:0.6rem; font-size:0.84rem; }
+  .insight-green { background:var(--success-pale); color:var(--success); }
+  .insight-blue  { background:var(--accent-pale); color:var(--accent); }
+  .insight-warn  { background:var(--warning-pale); color:var(--warning); }
+  .insight-icon  { flex-shrink:0; font-size:0.9rem; margin-top:1px; }
+
+  /* ── DOCUMENTS ── */
+  .doc-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .doc-item { display:flex; align-items:center; gap:1rem; padding:1rem 1.25rem; background:var(--cream); border:1px solid var(--border); border-radius:0.875rem; text-decoration:none; color:inherit; transition:border-color 0.2s, box-shadow 0.2s; }
+  .doc-item:hover { border-color:var(--accent-light); box-shadow:0 2px 12px var(--shadow); }
+  .doc-icon { font-size:1.6rem; flex-shrink:0; }
+  .doc-name { font-size:0.88rem; font-weight:500; color:var(--text-dark); }
+  .doc-meta { font-size:0.74rem; color:var(--text-muted); margin-top:1px; }
+  .doc-badge { font-size:0.68rem; font-weight:500; padding:0.15rem 0.55rem; border-radius:2rem; background:var(--accent-pale); color:var(--accent); margin-top:0.3rem; display:inline-block; }
+
+  /* ── GRAMMAR PILLS ── */
+  .grammar-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.625rem; }
+  .gram-item { padding:0.75rem 1rem; background:var(--cream); border:1px solid var(--border); border-radius:0.75rem; }
+  .gram-title { font-size:0.8rem; font-weight:500; color:var(--accent); margin-bottom:0.25rem; }
+  .gram-ex { font-size:0.76rem; color:var(--text-muted); font-style:italic; }
+  .gram-status { font-size:0.68rem; font-weight:500; padding:0.12rem 0.5rem; border-radius:2rem; display:inline-block; margin-top:0.35rem; }
+  .status-ok { background:var(--success-pale); color:var(--success); }
+  .status-rev { background:var(--warning-pale); color:var(--warning); }
+  .status-pend { background:#F0EEEB; color:var(--text-muted); }
+
+  /* ── CHART SVG ── */
+  .chart-container { position:relative; }
+  .chart-labels { display:flex; justify-content:space-between; margin-top:0.5rem; }
+  .chart-label { font-size:0.68rem; color:var(--text-muted); text-align:center; flex:1; }
 
   @media(max-width:768px) {
-    .grid-2, .grid-3 { grid-template-columns:1fr; }
+    .grid-2, .grid-3, .kpi-grid, .error-grid, .doc-grid, .grammar-grid { grid-template-columns:1fr; }
     nav, main, .page-header { padding-left:1.25rem; padding-right:1.25rem; }
     .mcer-track { flex-wrap:wrap; }
     .header-stats { gap:1.5rem; }
+    .skill-label { width:120px; }
+    .nav-links { display:none; }
   }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <a href="../index.html" class="nav-back">← Tornar al portafoli</a>
-  <span class="nav-title">PLM · Francès 🇫🇷</span>
+  <span class="nav-title">PLM · Curs de Francès 🇫🇷</span>
+  <div class="nav-links">
+    <a href="#progres">Progrés</a>
+    <a href="#sessions">Sessions</a>
+    <a href="#errors">Errors</a>
+    <a href="#documents">Documents</a>
+  </div>
 </nav>
 
+<!-- HEADER -->
 <div class="page-header">
   <div class="page-header-inner">
-    <div class="project-tag">▪ Projecte 04 · Aprenentatge personal</div>
-    <h1><span class="flag">🇫🇷</span>Aprenentatge del Francès</h1>
-    <p>Aprenentatge autònom des de zero fins a nivell B1 (MCER). Combinació de Duolingo, Anki, gramàtica i conversa.</p>
+    <div class="project-tag">PLM · Projecte d'aprenentatge · Idiomes</div>
+    <h1><span class="flag">🇫🇷</span>Curs de Francès — Progrés detallat</h1>
+    <p>Seguiment sessió per sessió del curs A1→B2. Estadístiques, documents generats i anàlisi d'errors.</p>
     <div class="header-stats">
-      <div class="hstat"><span class="val"><!-- PLM:H_PROGRESS -->
-1%
-<!-- /PLM:H_PROGRESS --></span><span class="lbl">Progrés fase actual</span></div>
-      <div class="hstat"><span class="val"><!-- PLM:H_HORES -->
-0.5h
-<!-- /PLM:H_HORES --></span><span class="lbl">Hores estudiades</span></div>
-      <div class="hstat"><span class="val"><!-- PLM:H_VOCAB -->
-3
-<!-- /PLM:H_VOCAB --></span><span class="lbl">Mots apresos</span></div>
-      <div class="hstat"><span class="val"><!-- PLM:H_TASQUES -->
-1/19
-<!-- /PLM:H_TASQUES --></span><span class="lbl">Tasques fetes</span></div>
+      <div class="hstat"><div class="val">A2</div><div class="lbl">Nivell actual</div></div>
+      <div class="hstat"><div class="val">21</div><div class="lbl">Exercicis fets</div></div>
+      <div class="hstat"><div class="val">8.1</div><div class="lbl">Mitjana global</div></div>
+      <div class="hstat"><div class="val">10/10</div><div class="lbl">Millor nota</div></div>
+      <div class="hstat"><div class="val">2/4</div><div class="lbl">Sessions completades</div></div>
     </div>
   </div>
 </div>
 
 <main>
-  <div class="excel-notice">
-    <strong>Dades generades automàticament des de l'Excel.</strong>
-    Modifica <code>PLM_Frances.xlsx</code>, fes <code>git push</code> i la web s'actualitza sola.
-  </div>
 
-  <!-- PROGRÉS + NIVELL MCER -->
-  <div class="big-progress">
+  <!-- ── PROGRÉS GLOBAL ── -->
+  <div id="progres" class="big-progress">
     <div class="big-progress-header">
-      <h2>Progrés — Fase actual</h2>
-      <span class="pct-badge"><!-- PLM:PROGRESS_PCT -->
-1%
-<!-- /PLM:PROGRESS_PCT --></span>
+      <h2>Progrés A1 → B2</h2>
+      <span class="pct-badge">33%</span>
     </div>
-    <div class="progress-track">
-      <div class="progress-track-fill" style="width:<!-- PLM:PROGRESS_BAR -->
-1
-<!-- /PLM:PROGRESS_BAR -->%"></div>
-    </div>
+    <div class="progress-track"><div class="progress-track-fill" style="width:33%"></div></div>
     <div class="mcer-track">
-      <div class="mcer-box current">A1<span class="mcer-label">Actual</span></div>
-      <div class="mcer-box">A2<span class="mcer-label">Superv.</span></div>
-      <div class="mcer-box">B1<span class="mcer-label">Objectiu</span></div>
-      <div class="mcer-box">B2<span class="mcer-label">—</span></div>
-      <div class="mcer-box">C1<span class="mcer-label">—</span></div>
-      <div class="mcer-box">C2<span class="mcer-label">—</span></div>
+      <div class="mcer-box done">A1<span class="mcer-label">✓ Completat</span></div>
+      <div class="mcer-box current">A2<span class="mcer-label">En curs</span></div>
+      <div class="mcer-box">B1<span class="mcer-label">Fase 3</span></div>
+      <div class="mcer-box target">B2<span class="mcer-label">Objectiu</span></div>
     </div>
-    <p style="font-size:0.78rem;color:var(--text-muted);margin-top:0.6rem">
-      Nivell objectiu: <strong style="color:var(--accent)">B1</strong> · Actualitza la caixa "current" a l'HTML quan avanços de nivell.
-    </p>
   </div>
 
-  <!-- FASES -->
-  <div class="section-sep">Fases d'aprenentatge</div>
-  <!-- PLM:FASES -->
-<div style="display:flex;align-items:center;gap:1rem;padding:0.9rem 1.1rem;background:#FEFCF9;border:1px solid #E2D9CE;border-radius:0.75rem;margin-bottom:0.6rem"><span style="font-size:1rem">⏳</span><div style="flex:1"><strong style="font-size:0.88rem;display:block">Fonaments A1</strong><span style="font-size:0.76rem;color:#8C7B68">Alfabet, fonètica, salutacions, presentació, números, colors, dies, mesos</span></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">░░░░░░░░░░  5%</span><div style="width:80px"><div style="height:5px;background:#E2D9CE;border-radius:3px;overflow:hidden;margin-top:0.4rem"><div style="width:5%;height:100%;background:#8C7B68;border-radius:3px"></div></div><div style="font-size:0.72rem;color:#8C7B68;text-align:right;margin-top:2px">5%</div></div></div>
-<div style="display:flex;align-items:center;gap:1rem;padding:0.9rem 1.1rem;background:#FEFCF9;border:1px solid #E2D9CE;border-radius:0.75rem;margin-bottom:0.6rem"><span style="font-size:1rem">⏳</span><div style="flex:1"><strong style="font-size:0.88rem;display:block">Supervivència A2</strong><span style="font-size:0.76rem;color:#8C7B68">Temps verbal present, vocabulari quotidià, compres, restaurants, transport</span></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">░░░░░░░░░░  0%</span><div style="width:80px"><div style="height:5px;background:#E2D9CE;border-radius:3px;overflow:hidden;margin-top:0.4rem"><div style="width:0%;height:100%;background:#8C7B68;border-radius:3px"></div></div><div style="font-size:0.72rem;color:#8C7B68;text-align:right;margin-top:2px">0%</div></div></div>
-<div style="display:flex;align-items:center;gap:1rem;padding:0.9rem 1.1rem;background:#FEFCF9;border:1px solid #E2D9CE;border-radius:0.75rem;margin-bottom:0.6rem"><span style="font-size:1rem">⏳</span><div style="flex:1"><strong style="font-size:0.88rem;display:block">Consolidació A2+</strong><span style="font-size:0.76rem;color:#8C7B68">Passat compost, imperfet, futur simple, conversa bàsica</span></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">░░░░░░░░░░  0%</span><div style="width:80px"><div style="height:5px;background:#E2D9CE;border-radius:3px;overflow:hidden;margin-top:0.4rem"><div style="width:0%;height:100%;background:#8C7B68;border-radius:3px"></div></div><div style="font-size:0.72rem;color:#8C7B68;text-align:right;margin-top:2px">0%</div></div></div>
-<div style="display:flex;align-items:center;gap:1rem;padding:0.9rem 1.1rem;background:#FEFCF9;border:1px solid #E2D9CE;border-radius:0.75rem;margin-bottom:0.6rem"><span style="font-size:1rem">⏳</span><div style="flex:1"><strong style="font-size:0.88rem;display:block">Intermedi B1</strong><span style="font-size:0.76rem;color:#8C7B68">Subjuntiu, condicional, debat senzill, lectura de textos</span></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">░░░░░░░░░░  0%</span><div style="width:80px"><div style="height:5px;background:#E2D9CE;border-radius:3px;overflow:hidden;margin-top:0.4rem"><div style="width:0%;height:100%;background:#8C7B68;border-radius:3px"></div></div><div style="font-size:0.72rem;color:#8C7B68;text-align:right;margin-top:2px">0%</div></div></div>
-<!-- /PLM:FASES -->
+  <!-- ── KPIs ── -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="val">21</div>
+      <div class="lbl">Exercicis fets</div>
+      <div class="sub">↑ 13 en S2</div>
+    </div>
+    <div class="kpi">
+      <div class="val">8.1</div>
+      <div class="lbl">Mitjana global</div>
+      <div class="sub">S1: 8.3 · S2: 8.0</div>
+    </div>
+    <div class="kpi">
+      <div class="val">10</div>
+      <div class="lbl">Lliçons completades</div>
+      <div class="sub">L1–L10</div>
+    </div>
+    <div class="kpi">
+      <div class="val">38%</div>
+      <div class="lbl">Vocabulari A1→B2</div>
+      <div class="sub">↑ des de 0%</div>
+    </div>
+  </div>
 
-  <!-- GRAMÀTICA + TASQUES -->
-  <div class="section-sep" style="margin-top:2.5rem">Gramàtica i tasques</div>
+  <!-- ── HABILITATS ── -->
+  <div class="section-sep">Habilitats</div>
+  <div class="card">
+    <div class="card-title">Progrés per habilitat</div>
+    <div class="skill-row">
+      <span class="skill-label">Comprensió escrita</span>
+      <div class="skill-track"><div class="skill-fill" style="width:38%;background:#4A7C59"></div></div>
+      <span class="skill-pct">38%</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-label">Vocabulari</span>
+      <div class="skill-track"><div class="skill-fill" style="width:38%;background:#1B3A5C"></div></div>
+      <span class="skill-pct">38%</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-label">Gramàtica</span>
+      <div class="skill-track"><div class="skill-fill" style="width:33%;background:#6B9AC4"></div></div>
+      <span class="skill-pct">33%</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-label">Pronunciació</span>
+      <div class="skill-track"><div class="skill-fill" style="width:3%;background:#A07820"></div></div>
+      <span class="skill-pct">3%</span>
+    </div>
+    <p style="font-size:0.76rem;color:var(--text-muted);margin-top:0.75rem">📌 Pronunciació pendent d'incorporar al curs a partir de B1.</p>
+  </div>
+
+  <!-- ── GRÀFIC D'EVOLUCIÓ ── -->
+  <div class="section-sep">Evolució de puntuacions</div>
+  <div class="card">
+    <div class="card-title">Puntuació per exercici — Sessions 1 i 2</div>
+    <div class="chart-container">
+      <svg viewBox="0 0 900 120" preserveAspectRatio="none" style="height:120px;width:100%">
+        <!-- Grid lines -->
+        <line x1="0" y1="10"  x2="900" y2="10"  stroke="#E2D9CE" stroke-width="0.5"/>
+        <line x1="0" y1="35"  x2="900" y2="35"  stroke="#E2D9CE" stroke-width="0.5"/>
+        <line x1="0" y1="60"  x2="900" y2="60"  stroke="#E2D9CE" stroke-width="0.5"/>
+        <line x1="0" y1="85"  x2="900" y2="85"  stroke="#E2D9CE" stroke-width="0.5"/>
+        <line x1="0" y1="110" x2="900" y2="110" stroke="#E2D9CE" stroke-width="0.5"/>
+        <!-- Labels eix Y -->
+        <text x="0" y="13"  font-size="9" fill="#8C7B68" font-family="DM Sans">10</text>
+        <text x="0" y="38"  font-size="9" fill="#8C7B68" font-family="DM Sans">9</text>
+        <text x="0" y="63"  font-size="9" fill="#8C7B68" font-family="DM Sans">8</text>
+        <text x="0" y="88"  font-size="9" fill="#8C7B68" font-family="DM Sans">7</text>
+        <text x="0" y="113" font-size="9" fill="#8C7B68" font-family="DM Sans">6</text>
+        <!-- Divisor S1/S2 -->
+        <line x1="418" y1="5" x2="418" y2="115" stroke="#E2D9CE" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="150" y="7" font-size="8" fill="#8C7B68" font-family="DM Sans" text-anchor="middle">SESSIÓ 1</text>
+        <text x="660" y="7" font-size="8" fill="#8C7B68" font-family="DM Sans" text-anchor="middle">SESSIÓ 2</text>
+        <!-- 
+          Puntuacions S1: 7.5,8.0,8.5,9.5,9.0,7.2,7.5,9.5
+          Puntuacions S2: 7.5,7.5,8.0,8.5,7.5,8.5,6.8,7.5,8.5,8.3,7.5,8.7,8.5
+          Escala: 6=110, 7=85, 7.5=72.5, 8=60, 8.5=47.5, 9=35, 9.5=22.5, 10=10
+          Funció: y = 110 - (score-6)*25
+          x: repartits en 900px, 21 punts. Inici ~25, pas ~41
+        -->
+        <!-- Àrea sota la corba S1 -->
+        <polygon points="
+          25,72.5 66,60 107,47.5 148,22.5 189,35 230,83.5 271,72.5 312,22.5 418,22.5 418,115 25,115
+        " fill="#1B3A5C" opacity="0.07"/>
+        <!-- Àrea sota la corba S2 -->
+        <polygon points="
+          418,72.5 459,72.5 500,72.5 541,60 582,47.5 623,72.5 664,47.5 705,83 746,72.5 787,47.5 828,60 869,72.5 910,36 910,36 900,47.5 900,115 418,115
+        " fill="#4A7C59" opacity="0.07"/>
+        <!-- Línia S1 -->
+        <polyline points="25,72.5 66,60 107,47.5 148,22.5 189,35 230,83.5 271,72.5 312,22.5"
+          fill="none" stroke="#1B3A5C" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+        <!-- Línia S2 -->
+        <polyline points="418,72.5 459,72.5 500,60 541,47.5 582,72.5 623,47.5 664,83 705,72.5 746,47.5 787,60 828,72.5 869,36 900,47.5"
+          fill="none" stroke="#4A7C59" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+        <!-- Punts S1 -->
+        <circle cx="25"  cy="72.5" r="3.5" fill="#1B3A5C"/>
+        <circle cx="66"  cy="60"   r="3.5" fill="#1B3A5C"/>
+        <circle cx="107" cy="47.5" r="3.5" fill="#1B3A5C"/>
+        <circle cx="148" cy="22.5" r="3.5" fill="#1B3A5C"/>
+        <circle cx="189" cy="35"   r="3.5" fill="#1B3A5C"/>
+        <circle cx="230" cy="83.5" r="3.5" fill="#1B3A5C"/>
+        <circle cx="271" cy="72.5" r="3.5" fill="#1B3A5C"/>
+        <circle cx="312" cy="22.5" r="3.5" fill="#1B3A5C"/>
+        <!-- Punts S2 -->
+        <circle cx="418" cy="72.5" r="3.5" fill="#4A7C59"/>
+        <circle cx="459" cy="72.5" r="3.5" fill="#4A7C59"/>
+        <circle cx="500" cy="60"   r="3.5" fill="#4A7C59"/>
+        <circle cx="541" cy="47.5" r="3.5" fill="#4A7C59"/>
+        <circle cx="582" cy="72.5" r="3.5" fill="#4A7C59"/>
+        <circle cx="623" cy="47.5" r="3.5" fill="#4A7C59"/>
+        <circle cx="664" cy="83"   r="3.5" fill="#4A7C59"/>
+        <circle cx="705" cy="72.5" r="3.5" fill="#4A7C59"/>
+        <circle cx="746" cy="47.5" r="3.5" fill="#4A7C59"/>
+        <circle cx="787" cy="60"   r="3.5" fill="#4A7C59"/>
+        <circle cx="828" cy="72.5" r="3.5" fill="#4A7C59"/>
+        <circle cx="869" cy="36"   r="3.5" fill="#4A7C59"/>
+        <circle cx="900" cy="47.5" r="3.5" fill="#4A7C59"/>
+        <!-- Llegenda -->
+        <rect x="700" y="95" width="8" height="8" rx="2" fill="#1B3A5C"/>
+        <text x="712" y="103" font-size="9" fill="#4A3F2F" font-family="DM Sans">Sessió 1  (m. 8.3)</text>
+        <rect x="800" y="95" width="8" height="8" rx="2" fill="#4A7C59"/>
+        <text x="812" y="103" font-size="9" fill="#4A3F2F" font-family="DM Sans">Sessió 2  (m. 8.0)</text>
+      </svg>
+    </div>
+    <div class="chart-labels">
+      <span class="chart-label">Presentació</span>
+      <span class="chart-label">Família</span>
+      <span class="chart-label">Sophie</span>
+      <span class="chart-label">Camille</span>
+      <span class="chart-label">Temps</span>
+      <span class="chart-label">Inv.</span>
+      <span class="chart-label">Buits</span>
+      <span class="chart-label">Deso.</span>
+      <span class="chart-label">Être/Av.</span>
+      <span class="chart-label">Inv.2</span>
+      <span class="chart-label">Deso.2</span>
+      <span class="chart-label">Buits2</span>
+      <span class="chart-label">Lliure</span>
+      <span class="chart-label">Comp.</span>
+      <span class="chart-label">Inv.3</span>
+      <span class="chart-label">Buits3</span>
+      <span class="chart-label">Lliure2</span>
+      <span class="chart-label">Comp.2</span>
+      <span class="chart-label">Inv.4</span>
+      <span class="chart-label">Deso.3</span>
+      <span class="chart-label">Lliure3</span>
+    </div>
+  </div>
+
+  <!-- ── SESSIONS ── -->
+  <div id="sessions" class="section-sep">Sessions</div>
   <div class="grid-2">
     <div class="card">
-      <div class="card-title">Temes gramaticals</div>
-      <!-- PLM:GRAMATICA -->
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Articles (le, la, les, un, une)</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68;font-style:italic">Le chat, la maison, les enfants</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E6EEF6;color:#1B3A5C;white-space:nowrap">Fase 1</span></div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0E6D6;color:#8B5E3C;white-space:nowrap">En progrés</span></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Pronoms personals subjecte</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68;font-style:italic">Je, tu, il/elle, nous, vous, ils</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E6EEF6;color:#1B3A5C;white-space:nowrap">Fase 1</span></div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0E6D6;color:#8B5E3C;white-space:nowrap">En progrés</span></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Verb être (present)</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68;font-style:italic">Je suis, tu es, il est...</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E6EEF6;color:#1B3A5C;white-space:nowrap">Fase 1</span></div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Verb avoir (present)</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68;font-style:italic">J'ai, tu as, il a...</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E6EEF6;color:#1B3A5C;white-space:nowrap">Fase 1</span></div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Adjectius: concordança gènere/nombre</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68;font-style:italic">grand/grande, petit/petite</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E6EEF6;color:#1B3A5C;white-space:nowrap">Fase 1</span></div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Negació (ne...pas)</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68;font-style:italic">Je ne parle pas français</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E6EEF6;color:#1B3A5C;white-space:nowrap">Fase 1</span></div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Preguntes bàsiques</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68;font-style:italic">Qu'est-ce que c'est? Comment? Pourquoi?</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E6EEF6;color:#1B3A5C;white-space:nowrap">Fase 1</span></div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Verbs -er (present)</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68;font-style:italic">Parler: je parle, tu parles...</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E6EEF6;color:#1B3A5C;white-space:nowrap">Fase 2</span></div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Verbs -ir i -re (present)</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68;font-style:italic">Finir, prendre...</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E6EEF6;color:#1B3A5C;white-space:nowrap">Fase 2</span></div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Passé composé</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68;font-style:italic">J'ai mangé, il est parti</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E6EEF6;color:#1B3A5C;white-space:nowrap">Fase 3</span></div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Imparfait</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68;font-style:italic">Je mangeais, il faisait...</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E6EEF6;color:#1B3A5C;white-space:nowrap">Fase 3</span></div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Futur simple</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68;font-style:italic">Je parlerai, tu iras...</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E6EEF6;color:#1B3A5C;white-space:nowrap">Fase 3</span></div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Condicional</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68;font-style:italic">Je voudrais, il faudrait...</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E6EEF6;color:#1B3A5C;white-space:nowrap">Fase 4</span></div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Subjonctif (present)</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68;font-style:italic">Il faut que je parle...</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E6EEF6;color:#1B3A5C;white-space:nowrap">Fase 4</span></div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<!-- /PLM:GRAMATICA -->
+      <div class="card-title">Sessió 1 — Mòdul A1</div>
+      <div class="session-row">
+        <span class="session-badge badge-done">✓ Fet</span>
+        <span class="session-name">L1 — Presentacions i salutacions</span>
+        <span class="session-score">7.7</span>
+      </div>
+      <div class="session-row">
+        <span class="session-badge badge-done">✓ Fet</span>
+        <span class="session-name">L2 — Números i colors</span>
+        <span class="session-score">8.5</span>
+      </div>
+      <div class="session-row">
+        <span class="session-badge badge-done">✓ Fet</span>
+        <span class="session-name">L3 — La família</span>
+        <span class="session-score">9.0</span>
+      </div>
+      <div class="session-row">
+        <span class="session-badge badge-done">✓ Fet</span>
+        <span class="session-name">L4 — El temps i els dies</span>
+        <span class="session-score">9.0</span>
+      </div>
+      <div class="session-row">
+        <span class="session-badge badge-done">✓ Fet</span>
+        <span class="session-name">L5 — Menjar i beguda</span>
+        <span class="session-score">8.1</span>
+      </div>
+      <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.78rem;color:var(--text-muted)">Mitjana sessió</span>
+        <span style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--accent)">8.3 / 10</span>
+      </div>
     </div>
+
     <div class="card">
-      <div class="card-title">Tasques d'aprenentatge</div>
-      <!-- PLM:TASQUES -->
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Aprendre l'alfabet i la fonètica francesa</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 1</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FDEAEA;color:#8B3A3A;white-space:nowrap">Alta</span><span style="font-size:0.72rem;color:#8C7B68">Sons nasals, è/é/ê</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Memoritzar 100 paraules bàsiques (Anki)</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 1</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FDEAEA;color:#8B3A3A;white-space:nowrap">Alta</span><span style="font-size:0.72rem;color:#8C7B68">Crear mazo Anki</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">✅</span><div style="flex:1"><div style="font-size:0.86rem;text-decoration:line-through;color:#8C7B68">Instal·lar i configurar Duolingo</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 1</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FDEAEA;color:#8B3A3A;white-space:nowrap">Alta</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Aprendre presentació personal</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 1</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FDEAEA;color:#8B3A3A;white-space:nowrap">Alta</span><span style="font-size:0.72rem;color:#8C7B68">Je m'appelle, j'ai X ans...</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Aprendre números 1-100</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 1</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FDEAEA;color:#8B3A3A;white-space:nowrap">Alta</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Aprendre dies de la setmana i mesos</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 1</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FEF6E0;color:#A07820;white-space:nowrap">Mitja</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Aprendre colors i adjectius bàsics</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 1</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FEF6E0;color:#A07820;white-space:nowrap">Mitja</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Primera conversa bàsica (amb app o nadiu)</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 1</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FEF6E0;color:#A07820;white-space:nowrap">Mitja</span><span style="font-size:0.72rem;color:#8C7B68">Tandem / HelloTalk</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Aprendre el present d'indicatiu (verbs -er)</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 2</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FDEAEA;color:#8B3A3A;white-space:nowrap">Alta</span><span style="font-size:0.72rem;color:#8C7B68">parler, manger, aimer...</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Aprendre el present (être i avoir)</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 2</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FDEAEA;color:#8B3A3A;white-space:nowrap">Alta</span><span style="font-size:0.72rem;color:#8C7B68">Verbs irregulars clau</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Vocabulari de menjar i restaurant</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 2</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FEF6E0;color:#A07820;white-space:nowrap">Mitja</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Vocabulari de transport i ciutat</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 2</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FEF6E0;color:#A07820;white-space:nowrap">Mitja</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Primer test de nivell formal (A1)</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 2</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FDEAEA;color:#8B3A3A;white-space:nowrap">Alta</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Aprendre passé composé</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 3</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FDEAEA;color:#8B3A3A;white-space:nowrap">Alta</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Aprendre l'imparfait</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 3</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FDEAEA;color:#8B3A3A;white-space:nowrap">Alta</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Veure una pel·lícula en francès (subtítols FR)</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 3</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FEF6E0;color:#A07820;white-space:nowrap">Mitja</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Test de nivell A2</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 3</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FDEAEA;color:#8B3A3A;white-space:nowrap">Alta</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Objectiu: conversa de 5 min sense pauses</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 4</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FDEAEA;color:#8B3A3A;white-space:nowrap">Alta</span></div></div></div>
-<div style="display:flex;gap:0.75rem;padding:0.6rem 0.4rem;border-bottom:1px solid #E2D9CE"><span style="font-size:0.85rem;margin-top:1px">⬜</span><div style="flex:1"><div style="font-size:0.86rem;color:#1A1208">Test oficial DELF B1</div><div style="display:flex;gap:0.6rem;margin-top:0.15rem;flex-wrap:wrap"><span style="font-size:0.72rem;color:#8C7B68">Fase 4</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FDEAEA;color:#8B3A3A;white-space:nowrap">Alta</span><span style="font-size:0.72rem;color:#8C7B68">Opcional</span></div></div></div>
-<!-- /PLM:TASQUES -->
+      <div class="card-title">Sessió 2 — Mòdul A2</div>
+      <div class="session-row">
+        <span class="session-badge badge-done">✓ Fet</span>
+        <span class="session-name">L6 — Être i Avoir</span>
+        <span class="session-score">7.5</span>
+      </div>
+      <div class="session-row">
+        <span class="session-badge badge-done">✓ Fet</span>
+        <span class="session-name">L7 — Verbs regulars (-er/-ir/-re)</span>
+        <span class="session-score">7.8</span>
+      </div>
+      <div class="session-row">
+        <span class="session-badge badge-done">✓ Fet</span>
+        <span class="session-name">L8 — Rutina diària i les hores</span>
+        <span class="session-score">7.6</span>
+      </div>
+      <div class="session-row">
+        <span class="session-badge badge-done">✓ Fet</span>
+        <span class="session-name">L9 — La ciutat i els transports</span>
+        <span class="session-score">8.1</span>
+      </div>
+      <div class="session-row">
+        <span class="session-badge badge-done">✓ Fet</span>
+        <span class="session-name">L10 — Descripció física i personalitat</span>
+        <span class="session-score">8.6</span>
+      </div>
+      <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.78rem;color:var(--text-muted)">Mitjana sessió</span>
+        <span style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--accent)">8.0 / 10</span>
+      </div>
     </div>
   </div>
 
-  <!-- VOCABULARI -->
-  <div class="section-sep">Vocabulari</div>
+  <!-- Properes sessions -->
   <div class="card">
-    <div class="card-title">Registre de vocabulari</div>
-    <div class="vocab-stats">
-      <div class="vstat"><span class="n"><!-- PLM:VOCAB_APRES -->
-3
-<!-- /PLM:VOCAB_APRES --></span><span class="l">mots apresos</span></div>
-      <div class="vstat"><span class="n"><!-- PLM:VOCAB_REPAS -->
-3
-<!-- /PLM:VOCAB_REPAS --></span><span class="l">en repàs</span></div>
-      <div class="vstat"><span class="n"><!-- PLM:VOCAB_PENDENT -->
-4
-<!-- /PLM:VOCAB_PENDENT --></span><span class="l">pendents</span></div>
+    <div class="card-title">Properes sessions</div>
+    <div class="session-row">
+      <span class="session-badge badge-current">En preparació</span>
+      <span class="session-name">Sessió 3 — Mòdul B1 · L11–L15</span>
+      <span class="session-meta">Passé composé · Imparfait · Condicional</span>
     </div>
-    <!-- PLM:VOCABULARI -->
-<div style="display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.4rem;border-bottom:1px solid #E2D9CE;font-size:0.85rem"><div style="flex:1"><span style="font-weight:500;color:#1B3A5C">bonjour</span><span style="color:#8C7B68;margin:0 0.4rem">→</span><span style="color:#4A3F2F">bon dia / hola</span><div style="font-size:0.72rem;color:#8C7B68;font-style:italic;margin-top:1px">Bonjour, comment allez-vous?</div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#4A3F2F;white-space:nowrap">Salutació</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E8F2EB;color:#4A7C59;white-space:nowrap">Après</span></div>
-<div style="display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.4rem;border-bottom:1px solid #E2D9CE;font-size:0.85rem"><div style="flex:1"><span style="font-weight:500;color:#1B3A5C">merci</span><span style="color:#8C7B68;margin:0 0.4rem">→</span><span style="color:#4A3F2F">gràcies</span><div style="font-size:0.72rem;color:#8C7B68;font-style:italic;margin-top:1px">Merci beaucoup!</div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#4A3F2F;white-space:nowrap">Cortesia</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E8F2EB;color:#4A7C59;white-space:nowrap">Après</span></div>
-<div style="display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.4rem;border-bottom:1px solid #E2D9CE;font-size:0.85rem"><div style="flex:1"><span style="font-weight:500;color:#1B3A5C">s'il vous plaît</span><span style="color:#8C7B68;margin:0 0.4rem">→</span><span style="color:#4A3F2F">si us plau</span><div style="font-size:0.72rem;color:#8C7B68;font-style:italic;margin-top:1px">Un café, s'il vous plaît.</div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#4A3F2F;white-space:nowrap">Cortesia</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#E8F2EB;color:#4A7C59;white-space:nowrap">Après</span></div>
-<div style="display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.4rem;border-bottom:1px solid #E2D9CE;font-size:0.85rem"><div style="flex:1"><span style="font-weight:500;color:#1B3A5C">je m'appelle</span><span style="color:#8C7B68;margin:0 0.4rem">→</span><span style="color:#4A3F2F">em dic</span><div style="font-size:0.72rem;color:#8C7B68;font-style:italic;margin-top:1px">Je m'appelle Iker.</div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#4A3F2F;white-space:nowrap">Presentació</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FEF6E0;color:#A07820;white-space:nowrap">En repàs</span></div>
-<div style="display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.4rem;border-bottom:1px solid #E2D9CE;font-size:0.85rem"><div style="flex:1"><span style="font-weight:500;color:#1B3A5C">j'ai X ans</span><span style="color:#8C7B68;margin:0 0.4rem">→</span><span style="color:#4A3F2F">tinc X anys</span><div style="font-size:0.72rem;color:#8C7B68;font-style:italic;margin-top:1px">J'ai 25 ans.</div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#4A3F2F;white-space:nowrap">Presentació</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FEF6E0;color:#A07820;white-space:nowrap">En repàs</span></div>
-<div style="display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.4rem;border-bottom:1px solid #E2D9CE;font-size:0.85rem"><div style="flex:1"><span style="font-weight:500;color:#1B3A5C">parler</span><span style="color:#8C7B68;margin:0 0.4rem">→</span><span style="color:#4A3F2F">parlar</span><div style="font-size:0.72rem;color:#8C7B68;font-style:italic;margin-top:1px">Je parle catalan.</div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#4A3F2F;white-space:nowrap">Verb</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#FEF6E0;color:#A07820;white-space:nowrap">En repàs</span></div>
-<div style="display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.4rem;border-bottom:1px solid #E2D9CE;font-size:0.85rem"><div style="flex:1"><span style="font-weight:500;color:#1B3A5C">manger</span><span style="color:#8C7B68;margin:0 0.4rem">→</span><span style="color:#4A3F2F">menjar</span><div style="font-size:0.72rem;color:#8C7B68;font-style:italic;margin-top:1px">Je mange une pomme.</div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#4A3F2F;white-space:nowrap">Verb</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<div style="display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.4rem;border-bottom:1px solid #E2D9CE;font-size:0.85rem"><div style="flex:1"><span style="font-weight:500;color:#1B3A5C">aller</span><span style="color:#8C7B68;margin:0 0.4rem">→</span><span style="color:#4A3F2F">anar</span><div style="font-size:0.72rem;color:#8C7B68;font-style:italic;margin-top:1px">Je vais à Paris.</div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#4A3F2F;white-space:nowrap">Verb</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<div style="display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.4rem;border-bottom:1px solid #E2D9CE;font-size:0.85rem"><div style="flex:1"><span style="font-weight:500;color:#1B3A5C">avoir</span><span style="color:#8C7B68;margin:0 0.4rem">→</span><span style="color:#4A3F2F">tenir</span><div style="font-size:0.72rem;color:#8C7B68;font-style:italic;margin-top:1px">J'ai un chien.</div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#4A3F2F;white-space:nowrap">Verb</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<div style="display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.4rem;border-bottom:1px solid #E2D9CE;font-size:0.85rem"><div style="flex:1"><span style="font-weight:500;color:#1B3A5C">être</span><span style="color:#8C7B68;margin:0 0.4rem">→</span><span style="color:#4A3F2F">ser/estar</span><div style="font-size:0.72rem;color:#8C7B68;font-style:italic;margin-top:1px">Je suis étudiant.</div></div><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#4A3F2F;white-space:nowrap">Verb</span><span style="font-size:0.7rem;font-weight:500;padding:0.2rem 0.65rem;border-radius:2rem;background:#F0EEEB;color:#8C7B68;white-space:nowrap">Pendent</span></div>
-<!-- /PLM:VOCABULARI -->
+    <div class="session-row">
+      <span class="session-badge badge-next">Pendent</span>
+      <span class="session-name">Sessió 4 — Mòdul B1+ · L16–L20</span>
+      <span class="session-meta">Subjonctif · Textos llargs · Conversa</span>
+    </div>
+    <div class="session-row">
+      <span class="session-badge badge-next">Pendent</span>
+      <span class="session-name">Sessió 5 — Mòdul B2 · L21–L25</span>
+      <span class="session-meta">Estructures avançades · Registre formal</span>
+    </div>
   </div>
 
-  <!-- REGISTRE DIARI -->
-  <div class="section-sep">Últimes sessions d'estudi</div>
+  <!-- ── GRAMÀTICA ── -->
+  <div class="section-sep">Gramàtica</div>
   <div class="card">
-    <div class="card-title">Registre diari</div>
-    <!-- PLM:REGISTRE -->
-<div style="padding:0.9rem 0;border-bottom:1px solid #E2D9CE"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem"><div><span style="font-weight:500;font-size:0.88rem;color:#1A1208">2025-06-01</span><span style="font-size:0.75rem;color:#8C7B68;margin-left:0.5rem">Diumenge</span></div><span style="font-family:'Playfair Display',serif;color:#1B3A5C;font-size:1rem">0.5h</span></div><div style="font-size:0.82rem;color:#4A3F2F">Configurar Duolingo. Primer contacte amb l'alfabet.</div><div style=\'font-size:0.78rem;color:#4A7C59;margin-top:0.2rem\'>📚 bonjour, merci, oui, non</div><div style=\'font-size:0.75rem;color:#8C7B68;font-style:italic;margin-top:0.2rem\'>Primer dia! Motivació alta.</div></div>
-<!-- /PLM:REGISTRE -->
+    <div class="card-title">Continguts gramaticals — estat actual</div>
+    <div class="grammar-grid">
+      <div class="gram-item">
+        <div class="gram-title">Articles (definits, indefinits, partitius)</div>
+        <div class="gram-ex">du pain · de la soupe · des légumes · pas de viande</div>
+        <span class="gram-status status-rev">En consolidació</span>
+      </div>
+      <div class="gram-item">
+        <div class="gram-title">Adjectius possessius</div>
+        <div class="gram-ex">mon père · ma mère · mes parents · leur fils</div>
+        <span class="gram-status status-ok">Après</span>
+      </div>
+      <div class="gram-item">
+        <div class="gram-title">Negació (ne...pas / jamais / plus)</div>
+        <div class="gram-ex">je ne mange pas · je ne dors jamais</div>
+        <span class="gram-status status-rev">En consolidació</span>
+      </div>
+      <div class="gram-item">
+        <div class="gram-title">Être i Avoir (present)</div>
+        <div class="gram-ex">je suis · j'ai · nous sommes · ils ont</div>
+        <span class="gram-status status-ok">Après</span>
+      </div>
+      <div class="gram-item">
+        <div class="gram-title">Verbs regulars -er / -ir / -re</div>
+        <div class="gram-ex">parler · finir · vendre — totes les persones</div>
+        <span class="gram-status status-ok">Après</span>
+      </div>
+      <div class="gram-item">
+        <div class="gram-title">Verbs pronominals</div>
+        <div class="gram-ex">je me lève · tu te douches · il se couche</div>
+        <span class="gram-status status-rev">En consolidació</span>
+      </div>
+      <div class="gram-item">
+        <div class="gram-title">Contraccions (au / du / aux / des)</div>
+        <div class="gram-ex">à + le = au · de + le = du</div>
+        <span class="gram-status status-rev">En consolidació</span>
+      </div>
+      <div class="gram-item">
+        <div class="gram-title">Aller irregular + futur immediat</div>
+        <div class="gram-ex">je vais · nous allons manger demain</div>
+        <span class="gram-status status-rev">En consolidació</span>
+      </div>
+      <div class="gram-item">
+        <div class="gram-title">Acord i posició d'adjectius (BAGS)</div>
+        <div class="gram-ex">un vieux monsieur · une belle fille · les yeux verts</div>
+        <span class="gram-status status-rev">En consolidació</span>
+      </div>
+      <div class="gram-item">
+        <div class="gram-title">Passé composé</div>
+        <div class="gram-ex">j'ai mangé · il est parti</div>
+        <span class="gram-status status-pend">Sessió 3</span>
+      </div>
+      <div class="gram-item">
+        <div class="gram-title">Imparfait</div>
+        <div class="gram-ex">je mangeais · il faisait beau</div>
+        <span class="gram-status status-pend">Sessió 3</span>
+      </div>
+      <div class="gram-item">
+        <div class="gram-title">Futur simple</div>
+        <div class="gram-ex">je parlerai · nous irons</div>
+        <span class="gram-status status-pend">Sessió 4</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ERRORS ── -->
+  <div id="errors" class="section-sep">Errors recurrents</div>
+  <div class="card">
+    <div class="card-title">Patrons d'error detectats</div>
+    <div class="insight insight-warn">
+      <span class="insight-icon">⚠️</span>
+      <span>Els errors actuals es concentren en <strong>formes irregulars</strong> (aller, boire) i <strong>accents circumflexos</strong> (hôpital, côté). Cap error de comprensió lectora.</span>
+    </div>
+    <div class="insight insight-green">
+      <span class="insight-icon">✅</span>
+      <span>Tendència positiva: els errors disminueixen en categories ja treballades (presentació, família, negació bàsica).</span>
+    </div>
+    <div style="margin-top:1.25rem">
+      <div class="error-grid">
+        <div class="error-item recurrent">
+          <div class="error-wrong">voudriais</div>
+          <div class="error-right">→ voudrais</div>
+          <div class="error-rule">Condicional de vouloir — sense la i extra</div>
+          <span class="error-count">2× repetit</span>
+        </div>
+        <div class="error-item recurrent">
+          <div class="error-wrong">j'alle / il allent</div>
+          <div class="error-right">→ je vais / il va</div>
+          <div class="error-rule">Aller és completament irregular</div>
+          <span class="error-count">2× repetit</span>
+        </div>
+        <div class="error-item recurrent">
+          <div class="error-wrong">à coté / l'hopital</div>
+          <div class="error-right">→ à côté / l'hôpital</div>
+          <div class="error-rule">Accent circumflex — error recurrent</div>
+          <span class="error-count">3× repetit</span>
+        </div>
+        <div class="error-item recurrent">
+          <div class="error-wrong">nous somme</div>
+          <div class="error-right">→ nous sommes</div>
+          <div class="error-rule">Être — sommes sempre amb -s final</div>
+          <span class="error-count">2× repetit</span>
+        </div>
+        <div class="error-item fixed">
+          <div class="error-wrong">j'ai emocioné</div>
+          <div class="error-right">→ je suis ravi(e)</div>
+          <div class="error-rule">No traduir mot a mot del català</div>
+          <span style="font-size:0.68rem;color:var(--success);margin-top:0.4rem;display:inline-block">✓ Corregit</span>
+        </div>
+        <div class="error-item fixed">
+          <div class="error-wrong">estimo a la família</div>
+          <div class="error-right">→ estimo la família</div>
+          <div class="error-rule">Calc del castellà — sense "a"</div>
+          <span style="font-size:0.68rem;color:var(--success);margin-top:0.4rem;display:inline-block">✓ Corregit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── INSIGHTS ── -->
+  <div class="section-sep">Anàlisi del rendiment</div>
+  <div class="card">
+    <div class="card-title">Patrons i observacions</div>
+    <div class="insight insight-green">
+      <span class="insight-icon">✅</span>
+      <span><strong>Comprensió lectora excel·lent</strong> — els textos per traduir són consistentment els millors resultats (8.5–9.5).</span>
+    </div>
+    <div class="insight insight-green">
+      <span class="insight-icon">✅</span>
+      <span><strong>Aprenentatge ràpid</strong> — els errors no es repeteixen entre sessions. Un cop corregit, rarament torna a aparèixer.</span>
+    </div>
+    <div class="insight insight-green">
+      <span class="insight-icon">✅</span>
+      <span><strong>Producció lliure progressiva</strong> — d'improvisar paraules angleses a construir textos coherents en dues sessions.</span>
+    </div>
+    <div class="insight insight-warn">
+      <span class="insight-icon">⚠️</span>
+      <span><strong>Verbs irregulars</strong> — aller i boire requereixen memorització activa. Recomanat: repassar conjugació a l'inici de S3.</span>
+    </div>
+    <div class="insight insight-blue">
+      <span class="insight-icon">📌</span>
+      <span><strong>Calcs del castellà</strong> — tendència a traduir estructures del castellà al català ("a mi no m'agrada"). Millorant amb el temps.</span>
+    </div>
+    <div class="insight insight-blue">
+      <span class="insight-icon">📌</span>
+      <span><strong>Pronunciació</strong> — és la única habilitat no treballada. S'incorporarà progressivament a partir de B1.</span>
+    </div>
+  </div>
+
+  <!-- ── DOCUMENTS ── -->
+  <div id="documents" class="section-sep">Documents del curs</div>
+  <div class="card">
+    <div class="card-title">Materials generats</div>
+    <div class="doc-grid">
+      <a href="documents/diccionari_personal_frances.pdf" class="doc-item">
+        <span class="doc-icon">📘</span>
+        <div>
+          <div class="doc-name">Diccionari personal de francès</div>
+          <div class="doc-meta">Vocabulari complet · Regles gramaticals · Errors recurrents</div>
+          <span class="doc-badge">Actualitzat S2 · L1–L10</span>
+        </div>
+      </a>
+      <a href="documents/resum_sessio1_frances.pdf" class="doc-item">
+        <span class="doc-icon">📊</span>
+        <div>
+          <div class="doc-name">Resum Sessió 1</div>
+          <div class="doc-meta">KPIs · Puntuacions · Vocabulari après · Errors</div>
+          <span class="doc-badge">Mòdul A1 · L1–L5</span>
+        </div>
+      </a>
+      <a href="#" class="doc-item">
+        <span class="doc-icon">📊</span>
+        <div>
+          <div class="doc-name">Resum Sessió 2</div>
+          <div class="doc-meta">KPIs · Conjugació · Vocabulari nou · Objectius S3</div>
+          <span class="doc-badge">Mòdul A2 · L6–L10</span>
+        </div>
+      </a>
+      <a href="#" class="doc-item" style="opacity:0.5;pointer-events:none">
+        <span class="doc-icon">📊</span>
+        <div>
+          <div class="doc-name">Resum Sessió 3</div>
+          <div class="doc-meta">Disponible en finalitzar la sessió</div>
+          <span class="doc-badge" style="background:#F0EEEB;color:var(--text-muted)">Pendent · Mòdul B1</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;padding:2rem 0 1rem;font-size:0.78rem;color:var(--text-muted)">
+    PLM · Iker Martin · Curs de Francès A1→B2 · Última actualització: Sessió 2
   </div>
 
 </main>

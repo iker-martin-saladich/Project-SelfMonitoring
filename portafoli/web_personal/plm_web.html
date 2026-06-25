@@ -68,9 +68,9 @@
     <div class="big-progress-header"><h2>Progrés global del projecte</h2><span class="pct-badge"><!-- PLM:PROGRESS_PCT -->
 45%
 <!-- /PLM:PROGRESS_PCT --></span></div>
-    <div class="progress-track"><div class="progress-track-fill" style="width:<!-- PLM:PROGRESS_BAR -->
-45
-<!-- /PLM:PROGRESS_BAR -->%"></div></div>
+    <div class="progress-track"><div class="progress-track-fill" data-progress="<!-- PLM:PROGRESS_BAR -->
+  45
+  <!-- /PLM:PROGRESS_BAR -->"></div></div>
   </div>
   <div class="section-sep">Fases del projecte</div>
   <!-- PLM:FASES -->
@@ -114,5 +114,12 @@
     </div>
   </div>
 </main>
+</main>
+<script>
+document.querySelectorAll('.progress-track-fill').forEach(el=>{
+  const v = el.dataset.progress && el.dataset.progress.trim();
+  if(v && !isNaN(v)) el.style.width = v + '%';
+});
+</script>
 </body>
 </html>

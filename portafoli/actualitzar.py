@@ -388,48 +388,6 @@ def processar_elevador():
     injectar(html, s)
     print("  OK  plm_elevador.html -> " + str(int(pg)) + "%")
 
-def processar_frances():
-    xlsx = BASE / "frances" / "PLM_Frances.xlsx"
-    html = BASE / "frances" / "plm_frances.html"
-    if not xlsx.exists():
-        print("  Excel frances no trobat"); return
-    wb   = load_workbook(xlsx, data_only=True)
-    ws_f = wb["Fases"]
-    ws_t = wb["Tasques"]
-    ws_g = nom_full(wb, ["Gramatica", "Gram\u00e0tica"])
-    ws_v = wb["Vocabulari"]
-    ws_r = wb["Registre"]
-    pg   = progress_global(ws_f, 6)
-    td   = sum(1 for r in files_dades(ws_t) if cel(ws_t, r, 5) == "Completat")
-    tt   = len(files_dades(ws_t))
-    va   = sum(1 for r in files_dades(ws_v) if cel(ws_v, r, 2) and "complet" in str(cel(ws_v, r, 6)).lower())
-    vr   = sum(1 for r in files_dades(ws_v) if cel(ws_v, r, 2) and "rep" in str(cel(ws_v, r, 6)).lower())
-    vp   = sum(1 for r in files_dades(ws_v) if cel(ws_v, r, 2) and "pendent" in str(cel(ws_v, r, 6)).lower())
-    ht   = 0.0
-    for r in files_dades(ws_r):
-        try:
-            ht += float(cel(ws_r, r, 4))
-        except Exception:
-            pass
-    s = {
-        "PROGRESS_PCT":  str(int(pg)) + "%",
-        "PROGRESS_BAR":  str(int(pg)),
-        "H_PROGRESS":    str(int(pg)) + "%",
-        "H_HORES":       str(round(ht, 1)) + "h",
-        "H_VOCAB":       str(va),
-        "H_TASQUES":     str(td) + "/" + str(tt),
-        "FASES":         html_fases(ws_f, 2, 3, 6, 7),
-        "GRAMATICA":     html_gramatica(ws_g),
-        "TASQUES":       html_tasques(ws_t, 2, 3, 4, 5, 6, 7),
-        "VOCABULARI":    html_vocabulari(ws_v),
-        "VOCAB_APRES":   str(va),
-        "VOCAB_REPAS":   str(vr),
-        "VOCAB_PENDENT": str(vp),
-        "REGISTRE":      html_registre(ws_r),
-    }
-    injectar(html, s)
-    print("  OK  plm_frances.html -> " + str(int(pg)) + "% | vocab: " + str(va) + " | hores: " + str(round(ht, 1)) + "h")
-
 def actualitzar_index():
     index = BASE / "index.html"
     if not index.exists():
@@ -438,7 +396,6 @@ def actualitzar_index():
         ("web",  BASE / "web_personal"   / "PLM_Web_Personal.xlsx",   ["Fases"],                       6),
         ("tfm",  BASE / "tfm_quantica"   / "PLM_TFM_Quantica.xlsx",   ["Capitols", "Cap\u00edtols"],   6),
         ("elev", BASE / "elevador_plats" / "PLM_Elevador_Plats.xlsx", ["Fases"],                       6),
-        ("fr",   BASE / "frances"        / "PLM_Frances.xlsx",        ["Fases"],                       6),
     ]
     prog = {}
     for pid, path, noms, c in configs:
@@ -455,8 +412,6 @@ def actualitzar_index():
         "BAR_TFM":  str(int(prog["tfm"])),
         "PCT_ELEV": str(int(prog["elev"])) + "%",
         "BAR_ELEV": str(int(prog["elev"])),
-        "PCT_FR":   str(int(prog["fr"]))   + "%",
-        "BAR_FR":   str(int(prog["fr"])),
     }
     injectar(index, s)
     print("  OK  index.html -> web " + str(int(prog["web"])) + "% | tfm " + str(int(prog["tfm"])) + "% | elev " + str(int(prog["elev"])) + "% | fr " + str(int(prog["fr"])) + "%")
