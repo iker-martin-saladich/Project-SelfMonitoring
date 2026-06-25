@@ -414,7 +414,7 @@ def actualitzar_index():
         "BAR_ELEV": str(int(prog["elev"])),
     }
     injectar(index, s)
-    print("  OK  index.html -> web " + str(int(prog["web"])) + "% | tfm " + str(int(prog["tfm"])) + "% | elev " + str(int(prog["elev"])) + "% | fr " + str(int(prog["fr"])) + "%")
+    print("  OK  index.html -> web " + str(int(prog["web"])) + "% | tfm " + str(int(prog["tfm"])) + "% | elev " + str(int(prog["elev"])) + "%")
 
 def main():
     print("\n=== Actualitzant portafoli ===\n")
