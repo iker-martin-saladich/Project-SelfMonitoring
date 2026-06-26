@@ -291,35 +291,6 @@ def injectar(html_path, seccions):
             print("  avis: PLM:" + clau + " no trobat a " + html_path.name)
     html_path.write_text(text, encoding="utf-8")
 
-def processar_web():
-    xlsx = BASE / "web_personal" / "PLM_Web_Personal.xlsx"
-    html = BASE / "web_personal" / "plm_web.html"
-    if not xlsx.exists():
-        print("  Excel web no trobat"); return
-    wb   = load_workbook(xlsx, data_only=True)
-    ws_f = wb["Fases"]
-    ws_t = wb["Tasques"]
-    ws_r = wb["Riscos"]
-    ws_p = wb["Pressupost"]
-    pg   = progress_global(ws_f, 6)
-    fd   = sum(1 for r in files_dades(ws_f) if cel(ws_f, r, 8) == "Completat")
-    td   = sum(1 for r in files_dades(ws_t) if cel(ws_t, r, 5) == "Completat")
-    tt   = len(files_dades(ws_t))
-    ro   = sum(1 for r in files_dades(ws_r) if cel(ws_r, r, 7) not in ("Tancat", "Acceptat"))
-    s = {
-        "PROGRESS_PCT": str(int(pg)) + "%",
-        "PROGRESS_BAR": str(int(pg)),
-        "H_PROGRESS":   str(int(pg)) + "%",
-        "H_FASES":      str(fd) + "/" + str(len(files_dades(ws_f))),
-        "H_TASQUES":    str(td) + "/" + str(tt),
-        "H_RISCOS":     str(ro),
-        "FASES":        html_fases(ws_f, 2, 3, 6, 8),
-        "TASQUES":      html_tasques(ws_t, 2, 3, 4, 5, 6, 7),
-        "RISCOS":       html_riscos(ws_r, 2, 3, 4, 5, 7),
-        "PRESSUPOST":   html_pressupost(ws_p, 2, 3, 4, 7),
-    }
-    injectar(html, s)
-    print("  OK  plm_web.html -> " + str(int(pg)) + "%")
 
 def processar_tfm():
     xlsx = BASE / "tfm_quantica" / "PLM_TFM_Quantica.xlsx"
@@ -393,7 +364,6 @@ def actualitzar_index():
     if not index.exists():
         return
     configs = [
-        ("web",  BASE / "web_personal"   / "PLM_Web_Personal.xlsx",   ["Fases"],                       6),
         ("tfm",  BASE / "tfm_quantica"   / "PLM_TFM_Quantica.xlsx",   ["Capitols", "Cap\u00edtols"],   6),
         ("elev", BASE / "elevador_plats" / "PLM_Elevador_Plats.xlsx", ["Fases"],                       6),
     ]
@@ -406,19 +376,16 @@ def actualitzar_index():
         except Exception:
             prog[pid] = 0
     s = {
-        "PCT_WEB":  str(int(prog["web"]))  + "%",
-        "BAR_WEB":  str(int(prog["web"])),
         "PCT_TFM":  str(int(prog["tfm"]))  + "%",
         "BAR_TFM":  str(int(prog["tfm"])),
         "PCT_ELEV": str(int(prog["elev"])) + "%",
         "BAR_ELEV": str(int(prog["elev"])),
     }
     injectar(index, s)
-    print("  OK  index.html -> web " + str(int(prog["web"])) + "% | tfm " + str(int(prog["tfm"])) + "% | elev " + str(int(prog["elev"])) + "%")
+    print("  OK  index.html -> tfm " + str(int(prog["tfm"])) + "% | elev " + str(int(prog["elev"])) + "%")
 
 def main():
     print("\n=== Actualitzant portafoli ===\n")
-    print("[Web Personal]");       processar_web()
     print("\n[TFM Quantica]");     processar_tfm()
     print("\n[Elevador]");         processar_elevador()
     print("\n[Pagina principal]"); actualitzar_index()
