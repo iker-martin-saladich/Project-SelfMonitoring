@@ -4,9 +4,9 @@ on:
   push:
     branches: [main]
     paths:
-      - 'portafoli/**/*.xlsx'
-      - 'portafoli/**/*.py'
-      - 'portafoli/**/*.html'
+      - 'site/**/*.xlsx'
+      - 'site/**/*.py'
+      - 'site/**/*.html'
   workflow_dispatch:
 
 jobs:
@@ -30,12 +30,12 @@ jobs:
 
       - name: Executar actualitzar.py
         run: python actualitzar.py
-        working-directory: portafoli
+        working-directory: site
 
       - name: Preparar carpeta de publicació
         run: |
           mkdir -p _site
-          cp -r portafoli/* _site/
+          cp -r site/* _site/
 
       - name: Publicar a GitHub Pages
         uses: actions/upload-pages-artifact@v3
